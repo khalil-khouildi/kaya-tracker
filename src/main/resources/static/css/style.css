@@ -1,0 +1,597 @@
+/* ============================================
+   DESIGN SYSTEM - Student Budget Tracker Neo
+   VERSION FINALE - Dynamique et lisible
+   ============================================ */
+
+:root {
+    /* ===== LIGHT MODE ===== */
+    --bg-gradient: linear-gradient(135deg, #f5f0ff 0%, #e8eef9 100%);
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --card-border: rgba(124, 58, 237, 0.2);
+
+    --text-primary: #1e1b2e;
+    --text-secondary: #5b5b6e;
+    --text-muted: #6c6c7a;
+    --text-on-dark: #ffffff;
+    --text-on-light: #1e1b2e;
+
+    --accent-primary: #7c3aed;
+    --accent-secondary: #f59e0b;
+    --accent-gradient: linear-gradient(135deg, #7c3aed, #f59e0b);
+
+    --sidebar-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --sidebar-text: #ffffff;
+    --sidebar-hover: rgba(255, 255, 255, 0.15);
+    --sidebar-active: rgba(255, 255, 255, 0.25);
+
+    --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.12);
+
+    --glass-border: 1px solid rgba(124, 58, 237, 0.2);
+    --scrollbar-track: #e2e8f0;
+    --scrollbar-thumb: #cbd5e1;
+    --table-hover: rgba(124, 58, 237, 0.05);
+    --table-border: rgba(124, 58, 237, 0.1);
+    --input-bg: #ffffff;
+    --input-border: #d1d5db;
+    --input-text: #1e1b2e;
+
+    --danger: #dc2626;
+    --danger-bg: rgba(220, 38, 38, 0.1);
+    --success: #10b981;
+    --success-bg: rgba(16, 185, 129, 0.1);
+    --warning: #f59e0b;
+    --warning-bg: rgba(245, 158, 11, 0.1);
+    --info: #3b82f6;
+    --info-bg: rgba(59, 130, 246, 0.1);
+
+    --dropdown-bg: #ffffff;
+    --dropdown-text: #1e1b2e;
+}
+
+[data-theme="dark"] {
+    /* ===== DARK MODE ===== */
+    --bg-gradient: linear-gradient(135deg, #0f0c1f 0%, #1a1730 100%);
+    --card-bg: rgba(30, 27, 46, 0.92);
+    --card-border: rgba(167, 139, 250, 0.3);
+
+    --text-primary: #f0eef7;
+    --text-secondary: #c4c0da;
+    --text-muted: #a8a3c2;
+    --text-on-dark: #ffffff;
+    --text-on-light: #1e1b2e;
+
+    --accent-primary: #a78bfa;
+    --accent-secondary: #fbbf24;
+    --accent-gradient: linear-gradient(135deg, #a78bfa, #fbbf24);
+
+    --sidebar-bg: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
+    --sidebar-text: #ffffff;
+    --sidebar-hover: rgba(255, 255, 255, 0.2);
+    --sidebar-active: rgba(255, 255, 255, 0.3);
+
+    --glass-border: 1px solid rgba(167, 139, 250, 0.3);
+    --scrollbar-track: #1e1b2e;
+    --scrollbar-thumb: #4c3d7a;
+    --table-hover: rgba(167, 139, 250, 0.08);
+    --table-border: rgba(167, 139, 250, 0.15);
+    --input-bg: #1e1b2e;
+    --input-border: rgba(167, 139, 250, 0.3);
+    --input-text: #f0eef7;
+
+    --danger: #f87171;
+    --danger-bg: rgba(248, 113, 113, 0.15);
+    --success: #34d399;
+    --success-bg: rgba(52, 211, 153, 0.15);
+    --warning: #fbbf24;
+    --warning-bg: rgba(251, 191, 36, 0.15);
+    --info: #60a5fa;
+    --info-bg: rgba(96, 165, 250, 0.15);
+
+    --dropdown-bg: #1e1b2e;
+    --dropdown-text: #f0eef7;
+}
+
+/* ===== GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    transition: background 0.3s ease, color 0.2s ease;
+}
+
+/* ===== SIDEBAR (dynamique) ===== */
+.neo-sidebar {
+    background: var(--sidebar-bg);
+    backdrop-filter: blur(12px);
+    border-right: var(--glass-border);
+    padding: 2rem 1rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+.neo-sidebar .logo {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.neo-sidebar .logo i {
+    font-size: 2.8rem;
+    background: linear-gradient(135deg, #fbbf24, #ffffff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.neo-sidebar .logo h5 {
+    color: var(--sidebar-text);
+    font-weight: 800;
+    margin-top: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.neo-sidebar .logo small {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.75rem;
+}
+
+.neo-sidebar .nav-link {
+    color: var(--sidebar-text);
+    padding: 0.85rem 1.2rem;
+    margin: 0.5rem 0;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+}
+
+.neo-sidebar .nav-link i {
+    width: 24px;
+    font-size: 1.2rem;
+    color: var(--sidebar-text);
+}
+
+.neo-sidebar .nav-link:hover {
+    background: var(--sidebar-hover);
+    transform: translateX(6px);
+}
+
+.neo-sidebar .nav-link.active {
+    background: var(--sidebar-active);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== MAIN CONTENT ===== */
+.neo-main {
+    padding: 2rem 2rem 1rem 2rem;
+    overflow-x: hidden;
+}
+
+/* ===== TEXTES DYNAMIQUES ===== */
+body, p, span, div, li, td, th, caption,
+small, strong, b, em, i, h1, h2, h3, h4, h5, h6,
+.form-label, .card-title, .card-text,
+.table, .table td, .table th, .table thead th {
+    color: var(--text-primary);
+}
+
+.text-muted, small:not(.badge small) {
+    color: var(--text-muted);
+}
+
+/* ===== CARDS ===== */
+.card, .stat-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: var(--glass-border);
+    border-radius: 28px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    overflow: hidden;
+}
+
+.card:hover, .stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-primary);
+}
+
+.card-header {
+    background: rgba(0, 0, 0, 0.05);
+    border-bottom: var(--glass-border);
+}
+
+/* ===== CATEGORY CARDS ===== */
+.category-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border-radius: 24px;
+}
+
+.category-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    height: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    border-radius: 20px;
+    transition: width 0.5s ease;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+    border-radius: 40px;
+    padding: 10px 24px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--accent-gradient);
+    color: white;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--danger), #b91c1c);
+    color: white;
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--accent-primary);
+    background: transparent;
+    color: var(--accent-primary);
+}
+
+.btn-outline-primary:hover {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.btn-secondary {
+    background: var(--text-muted);
+    color: white;
+}
+
+/* ===== TABLEAUX (CORRECTION MAJEURE) ===== */
+.table {
+    background: transparent;
+    color: var(--text-primary);
+}
+
+.table thead th {
+    background: rgba(124, 58, 237, 0.1);
+    backdrop-filter: blur(4px);
+    font-weight: 600;
+    border-bottom: 2px solid var(--table-border);
+    color: var(--text-primary);
+}
+
+.table tbody tr {
+    transition: background 0.2s;
+    border-bottom: 1px solid var(--table-border);
+}
+
+.table tbody tr:hover {
+    background: var(--table-hover);
+}
+
+.table td, .table th {
+    color: var(--text-primary);
+    vertical-align: middle;
+}
+
+/* FORCER les liens dans les tableaux */
+.table a, .table .btn-link {
+    color: var(--accent-primary);
+}
+
+/* ===== FORMULAIRES ===== */
+.form-control, .form-select {
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 20px;
+    padding: 12px 18px;
+    color: var(--input-text);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+    outline: none;
+}
+
+.form-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+/* ===== ALERTS ===== */
+.alert {
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    border: none;
+}
+
+.alert-success {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.alert-danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+.alert-warning {
+    background: var(--warning-bg);
+    color: var(--warning);
+}
+
+.alert-info {
+    background: var(--info-bg);
+    color: var(--info);
+}
+
+/* ===== BADGES ===== */
+.badge {
+    padding: 6px 12px;
+    border-radius: 40px;
+    font-weight: 500;
+}
+
+.badge.bg-success {
+    background: var(--success);
+    color: white;
+}
+
+.badge.bg-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.badge.bg-warning {
+    background: var(--warning);
+    color: #1e1b2e;
+}
+
+.badge.bg-info {
+    background: var(--info);
+    color: white;
+}
+
+.badge.bg-secondary {
+    background: var(--text-muted);
+    color: white;
+}
+
+/* ===== DROPDOWN ===== */
+.dropdown-menu {
+    background: var(--dropdown-bg);
+    backdrop-filter: blur(16px);
+    border: var(--glass-border);
+}
+
+.dropdown-item {
+    color: var(--dropdown-text);
+}
+
+.dropdown-item:hover {
+    background: rgba(124, 58, 237, 0.1);
+    color: var(--dropdown-text);
+}
+
+.dropdown-header {
+    color: var(--dropdown-text);
+}
+
+.dropdown-divider {
+    border-color: var(--table-border);
+}
+
+/* ===== FOOTER ===== */
+.neo-footer {
+    margin-top: 3rem;
+    padding: 2rem 0 1rem;
+    text-align: center;
+    border-top: var(--glass-border);
+    backdrop-filter: blur(4px);
+}
+
+.neo-footer p, .neo-footer span, .neo-footer a {
+    color: var(--text-muted);
+}
+
+.neo-footer a:hover {
+    color: var(--accent-primary);
+}
+
+/* ===== COULEURS SPÉCIFIQUES ===== */
+.text-danger {
+    color: var(--danger);
+}
+
+.text-success {
+    color: var(--success);
+}
+
+.text-warning {
+    color: var(--warning);
+}
+
+.text-info {
+    color: var(--info);
+}
+
+.text-primary {
+    color: var(--accent-primary);
+}
+
+/* ===== FONDS CLAIRS FIXES ===== */
+.bg-white, .bg-light,
+.card.bg-white, div.bg-white,
+[class*="bg-white"], [class*="bg-light"] {
+    color: #1e1b2e !important;
+}
+
+.bg-white p, .bg-white span, .bg-white div,
+.bg-white h1, .bg-white h2, .bg-white h3,
+.bg-white td, .bg-white th,
+.bg-light p, .bg-light span, .bg-light div,
+.bg-light h1, .bg-light h2, .bg-light h3 {
+    color: #1e1b2e !important;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .neo-main {
+        padding: 1rem;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .neo-sidebar {
+        position: relative;
+        height: auto;
+    }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card, .stat-card, .category-card {
+    animation: fadeInUp 0.5s ease-out backwards;
+}
+
+/* ===== UTILITIES ===== */
+.text-gradient {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.theme-toggle {
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--card-bg);
+    border: var(--glass-border);
+    border-radius: 40px;
+    padding: 8px 18px;
+    backdrop-filter: blur(8px);
+    color: var(--text-primary);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.02);
+}
+
+/* Graphiques canvas */
+canvas {
+    max-height: 300px;
+    width: 100%;
+}
+
+
+.neo-sidebar .logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.neo-sidebar .logo .logo-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.neo-sidebar .logo .logo-wrapper i {
+    font-size: 2.8rem;
+    color: white;
+}
+
+.neo-sidebar .logo .logo-wrapper .logo-overlay {
+    position: absolute;
+    bottom: -5px;
+    right: -10px;
+    font-size: 1.2rem;
+    background: var(--accent-secondary);
+    padding: 5px;
+    border-radius: 50%;
+    color: #1e1b2e;
+}
+
+.neo-sidebar .logo h5 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    background: linear-gradient(135deg, #fff, #fbbf24);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.neo-sidebar .logo h5 span {
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+.neo-sidebar .logo .logo-tagline {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-top: 4px;
+    letter-spacing: 1px;
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="sidebar" class="neo-sidebar">
+    <div class="logo">
+        <div class="logo-wrapper">
+            <i class="fas fa-coins"></i>
+            <i class="fas fa-chart-simple logo-overlay"></i>
+        </div>
+        <h5>KAYA <span>Tracker</span></h5>
+        <p class="logo-tagline">Gérez vos finances</p>
+    </div>
+
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/dashboard}" th:classappend="${currentPage == 'dashboard'} ? 'active' : ''">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/expenses}" th:classappend="${currentPage == 'expenses'} ? 'active' : ''">
+                <i class="fas fa-shopping-cart"></i> Dépenses
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/incomes}" th:classappend="${currentPage == 'incomes'} ? 'active' : ''">
+                <i class="fas fa-money-bill-wave"></i> Revenus
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/categories}" th:classappend="${currentPage == 'categories'} ? 'active' : ''">
+                <i class="fas fa-tags"></i> Catégories
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/piggybank}" th:classappend="${currentPage == 'piggybank'} ? 'active' : ''">
+                <i class="fas fa-piggy-bank"></i> Tirelire
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/borrow}" th:classappend="${currentPage == 'borrow'} ? 'active' : ''">
+                <i class="fas fa-hand-holding-usd"></i> Emprunts
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/reports}" th:classappend="${currentPage == 'reports'} ? 'active' : ''">
+                <i class="fas fa-file-alt"></i> Rapports
+            </a>
+        </li>
+        <li class="nav-item mt-4">
+            <hr style="border-color: rgba(255,255,255,0.2);">
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/logout}">
+                <i class="fas fa-sign-out-alt"></i> Déconnexion
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

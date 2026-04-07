@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="content">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3><i class="fas fa-plus-circle text-primary me-2"></i>Ajouter une dépense</h3>
+    <a th:href="@{/expenses}" class="btn btn-secondary">
+      <i class="fas fa-arrow-left me-2"></i>Retour
+    </a>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    <span th:text="${error}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <!-- Formulaire -->
+  <div class="card">
+    <div class="card-body">
+      <form th:action="@{/expenses/add}" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Catégorie *</label>
+          <select name="categoryId" class="form-select" required>
+            <option value="">Sélectionner une catégorie</option>
+            <option th:each="cat : ${categories}"
+                    th:value="${cat.id}"
+                    th:text="${cat.name.displayName} + ' (Budget: ' + cat.monthlyLimit + '€)'">
+            </option>
+          </select>
+          <small class="text-muted">Choisissez la catégorie de votre dépense</small>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description *</label>
+          <input type="text" name="description" class="form-control"
+                 placeholder="Ex: Déjeuner à la cantine" required maxlength="200">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Montant (€) *</label>
+          <input type="number" name="amount" class="form-control"
+                 step="0.01" min="0.01" max="10000" placeholder="0.00" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Reçu (optionnel)</label>
+          <input type="file" name="receipt" class="form-control" accept="image/*">
+          <small class="text-muted">Vous pouvez ajouter une photo de votre reçu</small>
+        </div>
+
+        <div class="alert alert-info">
+          <i class="fas fa-info-circle me-2"></i>
+          La date de la dépense sera automatiquement enregistrée comme aujourd'hui.
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <a th:href="@{/expenses}" class="btn btn-secondary">Annuler</a>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save me-2"></i>Enregistrer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

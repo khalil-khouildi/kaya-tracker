@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<canvas id="testChart" width="400" height="200"></canvas>
+<script>
+  var ctx = document.getElementById('testChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Test1', 'Test2', 'Test3'],
+      datasets: [{
+        label: 'Test',
+        data: [10, 20, 30],
+        backgroundColor: 'red'
+      }]
+    }
+  });
+  alert("Test chart créé !");
+</script>
+</body>
+</html>

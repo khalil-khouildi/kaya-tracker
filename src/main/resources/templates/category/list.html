@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3><i class="fas fa-tags text-primary me-2"></i>Mes Catégories</h3>
+    </div>
+
+    <div th:if="${param.success}" class="alert alert-success">
+        <i class="fas fa-check-circle me-2"></i>Limite modifiée avec succès !
+    </div>
+    <div th:if="${param.error}" class="alert alert-danger" th:text="${param.error}"></div>
+
+    <div class="alert alert-warning">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Information :</strong> Vous ne pouvez modifier la limite d'une catégorie qu'une seule fois par mois.
+    </div>
+
+    <div class="row">
+        <div th:each="cat : ${categories}" class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i th:class="${cat.name.icon} + ' fa-2x me-3'" style="color: #28a745;"></i>
+                        <div>
+                            <h5 class="mb-0" th:text="${cat.name.displayName}">Catégorie</h5>
+                            <small class="text-muted">Budget actuel: <strong th:text="'€' + ${cat.monthlyLimit}">0</strong></small>
+                        </div>
+                    </div>
+
+                    <div class="progress mb-3" style="height: 10px;">
+                        <div class="progress-bar"
+                             th:style="'width: ' + ${cat.spentAmount * 100 / cat.monthlyLimit} + '%; background-color: ' + ${cat.name.colorCode}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <small class="text-muted">Dépensé</small>
+                            <div class="text-danger fw-bold" th:text="'€' + ${cat.spentAmount}">0</div>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted">Restant</small>
+                            <div class="text-success fw-bold" th:text="'€' + ${cat.monthlyLimit - cat.spentAmount}">0</div>
+                        </div>
+                    </div>
+
+                    <!-- Formulaire de modification -->
+                    <form th:action="@{/categories/modify/{id}(id=${cat.id})}" method="post" class="mt-3">
+                        <div class="input-group">
+                            <input type="number" name="newLimit" class="form-control"
+                                   step="0.01" min="0" th:placeholder="'Nouvelle limite (€)'" required>
+                            <button type="submit" class="btn btn-primary"
+                                    th:disabled="${cat.isModified}">
+                                <i class="fas fa-edit me-1"></i>
+                                <span th:if="${cat.isModified}">Déjà modifié ce mois</span>
+                                <span th:unless="${cat.isModified}">Modifier</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

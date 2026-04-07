@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="header" class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+  <div th:if="${userFirstName}">
+    <h5 class="mb-0">
+      <i class="fas fa-sparkles me-2" style="color: var(--accent-primary);"></i>
+      Bonjour, <strong th:text="${userFirstName}" style="background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; color: transparent;">Buddy</strong>
+    </h5>
+  </div>
+
+  <div class="d-flex gap-3 align-items-center">
+    <!-- Dark mode toggle -->
+    <button class="theme-toggle" onclick="window.toggleTheme()" style="background: var(--card-bg); border: var(--glass-border); border-radius: 40px; padding: 8px 18px; backdrop-filter: blur(8px); transition: all 0.2s;">
+      <i class="fas fa-moon" id="dark-mode-icon" style="color: var(--text-primary);"></i>
+      <i class="fas fa-sun" id="light-mode-icon" style="display: none; color: var(--text-primary);"></i>
+      <span class="ms-1" style="color: var(--text-primary);">Thème</span>
+    </button>
+
+    <!-- Notifications DROPDOWN (CORRIGÉ) -->
+    <div class="dropdown">
+      <a href="#" class="text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="color: var(--text-primary);">
+        <i class="fas fa-bell fs-5"></i>
+        <span th:if="${unreadCount > 0}" class="badge bg-danger rounded-pill ms-1" th:text="${unreadCount}">0</span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end shadow-sm mt-2" style="min-width: 320px; background: var(--card-bg); backdrop-filter: blur(16px); border: var(--glass-border);">
+        <li class="dropdown-header bg-transparent py-2" style="color: var(--text-primary);">
+          <i class="fas fa-bell me-1"></i> Notifications
+          <span th:if="${unreadCount > 0}" class="badge bg-danger ms-2" th:text="${unreadCount}">0</span>
+        </li>
+        <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);"></li>
+
+        <!-- Liste des notifications -->
+        <div th:each="notif : ${unreadNotifications}">
+          <li>
+            <a class="dropdown-item" href="#" style="color: var(--text-primary);">
+              <div class="d-flex align-items-start gap-2">
+                <div class="mt-1">
+                  <i th:if="${notif.type.name() == 'BUDGET_WARNING'}" class="fas fa-exclamation-triangle text-warning"></i>
+                  <i th:if="${notif.type.name() == 'BUDGET_EXCEEDED'}" class="fas fa-times-circle text-danger"></i>
+                  <i th:if="${notif.type.name() == 'GOAL_COMPLETED'}" class="fas fa-trophy text-success"></i>
+                  <i th:if="${notif.type.name() != 'BUDGET_WARNING' and notif.type.name() != 'BUDGET_EXCEEDED' and notif.type.name() != 'GOAL_COMPLETED'}" class="fas fa-bell" style="color: var(--accent-primary);"></i>
+                </div>
+                <div>
+                  <div class="small fw-bold" th:text="${notif.type.name()}" style="color: var(--text-primary);"></div>
+                  <div class="small text-muted" th:text="${notif.type.message}"></div>
+                  <small class="text-muted" th:text="${#temporals.format(notif.createdAt, 'dd/MM/yyyy HH:mm')}"></small>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);"></li>
+        </div>
+
+        <li th:if="${unreadCount == 0}" class="text-center py-3" style="color: var(--text-secondary);">
+          <i class="fas fa-bell-slash mb-2 d-block"></i>
+          Aucune notification
+        </li>
+        <li th:if="${unreadCount > 0}" class="text-center py-2 bg-transparent">
+          <form method="post" th:action="@{/notifications/read-all}" style="display: inline;">
+            <button type="submit" class="dropdown-item text-primary small" style="background: none; border: none; width: 100%;">
+              <i class="fas fa-check-double me-1"></i> Tout marquer comme lu
+            </button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

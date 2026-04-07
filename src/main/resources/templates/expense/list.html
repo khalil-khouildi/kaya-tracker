@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="content">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3><i class="fas fa-shopping-cart me-2" style="color: var(--danger);"></i> Mes Dépenses</h3>
+    <a th:href="@{/expenses/add}" class="btn btn-primary">
+      <i class="fas fa-plus me-2"></i>Ajouter une dépense
+    </a>
+  </div>
+
+  <!-- Filtres -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <form method="get" class="row g-3">
+        <div class="col-md-3">
+          <label class="form-label">Mois</label>
+          <select name="month" class="form-select">
+            <option th:each="m : ${#numbers.sequence(1, 12)}"
+                    th:value="${m}"
+                    th:text="${m} + ' - ' + ${currentYear}"
+                    th:selected="${m == currentMonth}">Janvier</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Année</label>
+          <select name="year" class="form-select">
+            <option th:each="y : ${#numbers.sequence(currentYear - 2, currentYear + 1)}"
+                    th:value="${y}"
+                    th:text="${y}"
+                    th:selected="${y == currentYear}">2024</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Catégorie</label>
+          <select name="category" class="form-select">
+            <option value="">Toutes</option>
+            <option th:each="cat : ${categories}"
+                    th:value="${cat.id}"
+                    th:text="${cat.name.displayName}">Catégorie</option>
+          </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+          <button type="submit" class="btn btn-outline-primary w-100">
+            <i class="fas fa-search me-2"></i>Filtrer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Messages d'alerte -->
+  <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show">
+    <i class="fas fa-check-circle me-2"></i>Dépense ajoutée avec succès !
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  <div th:if="${param.deleted}" class="alert alert-info alert-dismissible fade show">
+    <i class="fas fa-trash-alt me-2"></i>Dépense supprimée.
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <!-- Tableau des dépenses - ÉCRITURE NOIRE -->
+  <div class="card">
+    <div class="card-header" style="background: #f8f9fa; border-bottom: 1px solid #dee2e6;">
+      <h5 class="mb-0" style="color: #000;">Liste des dépenses</h5>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-hover mb-0">
+        <thead style="background: #e9ecef;">
+        <tr>
+          <th style="color: #000; font-weight: 600;">Date</th>
+          <th style="color: #000; font-weight: 600;">Catégorie</th>
+          <th style="color: #000; font-weight: 600;">Description</th>
+          <th style="color: #000; font-weight: 600;">Montant</th>
+          <th style="color: #000; font-weight: 600;">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="exp : ${expenses}" style="border-bottom: 1px solid #dee2e6;">
+          <td style="color: #000;" th:text="${#temporals.format(exp.createdAt, 'dd/MM/yyyy')}">-</td>
+          <td style="color: #000;">
+            <i th:class="${exp.category.name.icon} + ' me-2'" style="color: #7c3aed;"></i>
+            <span th:text="${exp.category.name.displayName}" style="color: #000;">-</span>
+          </td>
+          <td style="color: #000;" th:text="${exp.description}">-</td>
+          <td style="color: #dc2626; font-weight: bold;" th:text="'€' + ${exp.amount}">-</td>
+          <td>
+            <a th:href="@{/expenses/delete/{id}(id=${exp.id})}"
+               class="btn btn-sm btn-danger"
+               onclick="return confirm('Supprimer cette dépense ?')"
+               style="background: #dc2626; color: white;">
+              <i class="fas fa-trash-alt"></i>
+            </a>
+          </td>
+        </tr>
+        <tr th:if="${expenses.isEmpty()}">
+          <td colspan="5" class="text-center py-4" style="color: #6c757d;">
+            <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+            Aucune dépense pour cette période
+          </td>
+        </tr>
+        </tbody>
+        <tfoot th:if="${!expenses.isEmpty()}" style="background: #f8f9fa;">
+        <tr>
+          <td colspan="3" class="text-end fw-bold" style="color: #000;">Total :</td>
+          <td style="color: #dc2626; font-weight: bold;" th:text="'€' + ${totalExpenses}">-</td>
+          <td style="color: #000;"></td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

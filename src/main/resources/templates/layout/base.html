@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title th:text="${title} ?: 'Budget Tracker Neo'">Budget Tracker Neo</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            transition: background 0.3s ease, color 0.2s ease;
+        }
+
+        .app-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 992px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <aside class="neo-sidebar" th:replace="~{fragments/sidebar :: sidebar}"></aside>
+
+    <main class="neo-main">
+        <div th:replace="~{fragments/header :: header}"></div>
+        <div th:insert="~{${page} :: content}"></div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </main>
+</div>
+
+<!-- Bootstrap JS (DOIT être chargé pour les dropdowns) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    (function() {
+        const theme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+
+        window.toggleTheme = function() {
+            let current = document.documentElement.getAttribute('data-theme');
+            let next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            updateThemeIcon();
+        };
+
+        window.updateThemeIcon = function() {
+            const theme = document.documentElement.getAttribute('data-theme');
+            const moonIcon = document.getElementById('dark-mode-icon');
+            const sunIcon = document.getElementById('light-mode-icon');
+            if (moonIcon && sunIcon) {
+                if (theme === 'dark') {
+                    moonIcon.style.display = 'none';
+                    sunIcon.style.display = 'inline-block';
+                } else {
+                    moonIcon.style.display = 'inline-block';
+                    sunIcon.style.display = 'none';
+                }
+            }
+        };
+
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+
+        setTimeout(updateThemeIcon, 100);
+    })();
+</script>
+</body>
+</html>

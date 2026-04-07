@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="content">
+    <h3 class="mb-4"><i class="fas fa-hand-holding-usd text-danger me-2"></i>Gestion des emprunts</h3>
+
+    <!-- Emprunts en cours -->
+    <div class="card mb-4 border-danger">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Emprunts en cours</h5>
+        </div>
+        <div class="card-body">
+            <div th:if="${pendingBorrows.isEmpty()}" class="text-center text-muted py-3">
+                <i class="fas fa-check-circle fa-2x mb-2 d-block"></i>
+                Aucun emprunt en cours
+            </div>
+            <div th:unless="${pendingBorrows.isEmpty()}">
+                <div class="alert alert-warning">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Total à rembourser: <strong th:text="'€' + ${totalPending}">0</strong>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Montant</th>
+                        <th>Raison</th>
+                        <th>Remboursement prévu</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="borrow : ${pendingBorrows}">
+                        <td th:text="${#temporals.format(borrow.borrowedDate, 'dd/MM/yyyy')}">-</td>
+                        <td class="text-danger fw-bold" th:text="'€' + ${borrow.amount}">-</td>
+                        <td th:text="${borrow.reason}">-</td>
+                        <td>
+                                    <span class="badge bg-info">
+                                        <span th:text="${borrow.expectedRepaymentMonth}">0</span>/
+                                        <span th:text="${borrow.expectedRepaymentYear}">0</span>
+                                    </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historique des emprunts -->
+    <div class="card">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0"><i class="fas fa-history me-2"></i>Historique des emprunts</h5>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                <tr>
+                    <th>Date emprunt</th>
+                    <th>Montant</th>
+                    <th>Raison</th>
+                    <th>Date remboursement</th>
+                    <th>Statut</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="borrow : ${borrows}">
+                    <td th:text="${#temporals.format(borrow.borrowedDate, 'dd/MM/yyyy')}">-</td>
+                    <td class="fw-bold" th:class="${borrow.isRepaid} ? 'text-muted' : 'text-danger'"
+                        th:text="'€' + ${borrow.amount}">-</td>
+                    <td th:text="${borrow.reason}">-</td>
+                    <td>
+                                <span th:if="${borrow.actualRepaymentDate}"
+                                      th:text="${#temporals.format(borrow.actualRepaymentDate, 'dd/MM/yyyy')}">-</span>
+                        <span th:unless="${borrow.actualRepaymentDate}" class="text-muted">-</span>
+                    </td>
+                    <td>
+                                <span th:if="${borrow.isRepaid}" class="badge bg-success">
+                                    <i class="fas fa-check-circle me-1"></i>Remboursé
+                                </span>
+                        <span th:unless="${borrow.isRepaid}" class="badge bg-danger">
+                                    <i class="fas fa-clock me-1"></i>En cours
+                                </span>
+                    </td>
+                </tr>
+                <tr th:if="${borrows.isEmpty()}">
+                    <td colspan="5" class="text-center py-4 text-muted">
+                        <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                        Aucun historique d'emprunt
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

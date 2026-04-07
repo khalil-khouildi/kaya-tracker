@@ -1,0 +1,25 @@
+# IDE 
+.idea/ 
+.vscode/ 
+*.iml 
+ 
+# Java 
+target/ 
+*.class 
+*.log 
+ 
+# OS 
+.DS_Store 
+Thumbs.db 
+ 
+# Database 
+*.db 
+*.h2.db 
+ 
+# === SECURITE - FICHIERS SENSIBLES === 
+application-dev.properties 
+application-prod.properties 
+.env 
+.env.local 
+*.key 
+secrets/ 
